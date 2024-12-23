@@ -1,0 +1,26 @@
+CHIP Palindrome {
+    IN in[16];
+    OUT out;    
+
+    PARTS:
+    Xor(a=in[0], b=in[15], out=x1);
+    Xor(a=in[1], b=in[14], out=x2);
+    Xor(a=in[2], b=in[13], out=x3);
+    Xor(a=in[3], b=in[12], out=x4);
+    Xor(a=in[4], b=in[11], out=x5);
+    Xor(a=in[5], b=in[10], out=x6);
+    Xor(a=in[6], b=in[9], out=x7);
+    Xor(a=in[7], b=in[8], out=x8);
+
+    Or(a=x1, b=x2, out=o1);
+    Or(a=x3, b=x4, out=o2);
+    Or(a=x5, b=x6, out=o3);
+    Or(a=x7, b=x8, out=o4);
+
+    Or(a=o1, b=o2, out=o12);
+    Or(a=o3, b=o4, out=o34);
+
+    Or(a=o12, b=o34, out=temp);
+
+    Not(in=temp, out=out);
+}
