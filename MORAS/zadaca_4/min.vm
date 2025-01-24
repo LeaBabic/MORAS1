@@ -1,0 +1,45 @@
+push constant 15
+push constant 12
+push constant 14
+call min 3 
+
+function min 0 
+push argument 0
+push argument 1
+lt
+if-goto COMPARE_FIRST
+goto COMPARE_SECOND
+
+
+
+label COMPARE_FIRST
+push argument 0
+push argument 2
+lt
+if-goto RESULT_FIRST
+goto RESULT_THIRD
+
+
+label COMPARE_SECOND
+push argument 1
+push argument 2
+lt
+if-goto RESULT_SECOND
+goto RESULT_THIRD
+
+
+
+label RESULT_FIRST
+push argument 0
+goto END
+
+label RESULT_SECOND
+push argument 1
+goto END
+
+label RESULT_THIRD
+push argument 2
+goto END
+
+label END
+return
