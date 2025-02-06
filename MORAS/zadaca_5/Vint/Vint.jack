@@ -1,0 +1,200 @@
+class Vint {
+ field int capacity;
+ field Array v;
+
+ method int len (){
+  var int result;
+  let result = capacity;
+  return result;
+ }
+ 
+ method void print (){
+  var int idx, dummy;
+  let idx = 0;
+  while(idx < capacity){
+   do Output.printInt(v[idx]);
+   do Output.printChar(" ");
+   let idx = idx + 1;
+  }
+  return;
+ }
+
+ function int pow (int x){
+  var int result;
+  let result = 1;
+  while(x > 0){
+   let result = result * 2;
+   let x = x - 1;
+  }
+  return result;
+ }
+ 
+ constructor Vint new (int n){
+  var int newLength;
+  if (n < 0){
+   let newLength = 1;
+  } 
+  else {
+   let newLength = Vint.pow(n);
+  }
+  let capacity = newLength;
+  let v = Array.new(newLength);
+  return this;
+ }
+ 
+ method void set(int k, int vrijed){
+  var Array tempArray;
+  var int idx, oldCap;
+  let idx = 0;
+  let oldCap = capacity;
+  if (k < capacity){
+   let v[k] = vrijed;
+   return;
+  }
+  else {
+   while (capacity < k){
+    let capacity = capacity * 2;
+   }
+   let tempArray = Array.new(capacity);
+   while (idx < oldCap){
+    let tempArray[idx] = v[idx];
+    let idx = idx + 1;
+   }
+   let tempArray[k] = vrijed;
+   do v.dispose();
+   let v = Array.new(capacity);
+   let idx = 0;
+   while(idx < capacity){
+    let v[idx] = tempArray[idx];
+    let idx = idx + 1;
+   }
+  }
+  return;
+ }
+
+ method int get(int k){
+  if (k < capacity){
+   return v[k];
+  }
+  return -1;
+ }
+
+ method bool is_eq(Vint prvi, Vint drugi){
+  var int pos, len1, len2;
+  let len1 = prvi.len();
+  let len2 = drugi.len();
+  let pos = 0;
+  if (~(len1 = len2)){
+   return false;
+  } 
+  else {
+   while (pos < len1){
+    if (prvi.get(pos) = drugi.get(pos)){
+     let pos = pos + 1;
+    }
+    else {
+     return false;
+    }
+   }
+   return true;
+  }
+ }
+
+ ///// pomocne
+ method void swap(int a, int b){
+  var int tempVal;
+  let tempVal = v[a];
+  let v[a] = v[b];
+  let v[b] = tempVal;
+  return;
+ }
+
+ function int min(int a, int b){
+  if(a < b) { return a; }
+  else { return b; }
+ }
+
+ method void Dispose(){
+  do Memory.deAlloc(this);
+  return;
+ }
+
+ function bool elems(Vint vekt1, Vint vekt2){ // sortiram oba i usporedujem redom
+  var int idx1, idx2, len1, len2;
+  let idx1 = 0;
+  let idx2 = 0;
+  let len1 = vekt1.len();
+  let len2 = vekt2.len();
+  
+  if (~(len1 = len2)){
+   return false;
+  }
+  
+  while(idx1 < len1){  
+   let idx2 = idx1 + 1;
+   while(idx2 < len1){
+    if(vekt1.get(idx1) > vekt1.get(idx2)){
+     do vekt1.swap(idx1, idx2);
+    }
+    let idx2 = idx2 + 1;
+   }
+   let idx1 = idx1 + 1;
+  }
+
+  let idx1 = 0;
+  let idx2 = 0;
+
+  while(idx1 < len2){  
+   let idx2 = idx1 + 1;
+   while(idx2 < len2){
+    if(vekt2.get(idx1) > vekt2.get(idx2)){
+     do vekt2.swap(idx1, idx2);
+    }
+    let idx2 = idx2 + 1;
+   }
+   let idx1 = idx1 + 1;
+  }
+
+  let idx1 = 0;
+  while(idx1 < len1){
+   if(~(vekt1.get(idx1) = vekt2.get(idx1))){ 
+    return false;
+   }
+   let idx1 = idx1 + 1;
+  }
+  return true;
+ }
+
+ method void resize(int m){
+  var Array newArray;
+  var int firstElem, newCap, idx, minCap;
+  if(m < 1){
+   let firstElem = v[0];
+   do v.dispose();
+   let v = Array.new(1);
+   let v[0] = firstElem;
+   let capacity = 1;
+   return;
+  }
+
+  let newCap = Vint.pow(m);  // nova duljina polja
+  if(newCap = capacity){ return; } // ako se ne mijenja duljina  
+  let newArray = Array.new(newCap);
+  let idx = 0;
+  let minCap = Vint.min(newCap, capacity);
+  while(idx < minCap){
+   let newArray[idx] = v[idx];
+   let idx = idx + 1;
+  }
+  do v.dispose();
+  let v = Array.new(newCap);
+  let idx = 0;
+  while(idx < newCap){
+   let v[idx] = newArray[idx];
+   let idx = idx + 1;
+  }
+  do newArray.dispose();
+  let capacity = newCap;
+  return;
+ }
+}

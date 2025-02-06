@@ -1,0 +1,32 @@
+class Main {
+ function void main() {
+  var Vint vecA, vecB;
+  var int lenA, lenB;
+  var bool result;
+  let vecA = Vint.new(2);
+  let vecB = Vint.new(2);
+
+  do vecA.set(0, 2);
+  do vecA.set(1, 5);
+  do vecA.set(2, 3);
+  do vecA.set(3, 4);
+  do vecB.set(0, 4);
+  do vecB.set(1, 3);
+  do vecB.set(2, 2);
+  do vecB.set(3, 1);
+
+  let lenA = vecA.len();
+  let lenB = vecB.len();
+
+  do Output.printInt(lenA);
+  do Output.printInt(lenB);
+  do Output.println();
+
+  let result = Vint.elems(vecA, vecB);
+
+  do Output.printInt(result);
+
+  do vecA.Dispose();
+  return;
+ }
+}
